@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>2026 田澤湖滑雪之旅</title>
+    
+    <style>
+        :root {
+            /* 還原回原本的質感配色 */
+            --primary: #6366f1; /* 原本的質感靛藍色 */
+            --bg-gradient: linear-gradient(135deg, #f9fafb 0%, #e5e7eb 100%); /* 還原灰白漸層背景 */
+            --card-bg: #ffffff;
+            --text-main: #1f2937;
+            --radius: 16px;
+        }
+
+        body {
+            /* 還原回系統預設字體，閱讀性最佳 */
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: var(--bg-gradient);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            -webkit-tap-highlight-color: transparent;
+            padding-bottom: 80px;
+        }
+
+        /* --- Header --- */
+        .app-header {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            padding-top: env(safe-area-inset-top);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .title-bar {
+            padding: 15px 20px 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        h1 { margin: 0; font-size: 1.3rem; color: #111827; font-weight: 800; }
+        .subtitle { font-size: 0.85rem; color: #6b7280; margin-top: 4px; font-weight: 500; }
+
+        /* --- Tabs --- */
+        .tabs-wrapper {
+            display: flex;
+            overflow-x: auto;
+            padding: 10px 15px 15px 15px;
+            gap: 10px;
+            scrollbar-width: none;
+        }
+        .tabs-wrapper::-webkit-scrollbar { display: none; }
+
+        .tab-btn {
+            background: #f3f4f6;
+            border: none;
+            border-radius: 12px;
+            padding: 8px 16px;
+            min-width: 55px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            flex-shrink: 0;
+            color: #4b5563;
+        }
+
+        .tab-btn.active {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 6px rgba(99, 102, 241, 0.2);
+        }
+
+        .tab-day { font-size: 0.7rem; font-weight: normal; margin-bottom: 2px; }
+        .tab-date { font-size: 1rem; font-weight: 700; }
+
+        /* --- Content --- */
+        .container {
+            padding: 20px;
+            /* 響應式設計關鍵：限制最大寬度並置中 */
+            max-width: 600px; 
+            margin: 0 auto;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 18px;
+            margin-bottom: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            display: flex;
+            gap: 15px;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid #f3f4f6;
+            animation: slideUp 0.3s ease-out forwards;
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        @keyframes slideUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 左側時間軸 */
+        .time-col {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 55px;
+            padding-right: 15px;
+            border-right: 1px dashed #e5e7eb;
+            justify-content: flex-start;
+            padding-top: 5px;
+        }
+
+        .time-text { font-size: 1.1rem; font-weight: 800; color: #1f2937; }
+        .time-ampm { font-size: 0.7rem; color: #9ca3af; font-weight: 600; text-transform: uppercase; margin-top: 2px; }
+
+        .info-col { flex: 1; position: relative; z-index: 2; }
+
+        /* 標籤 */
+        .tag {
+            display: inline-block;
+            font-size: 0.75rem;
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-weight: 700;
+            margin-bottom: 6px;
+            letter-spacing: 0.5px;
+        }
+
+        .activity-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 6px;
+            line-height: 1.4;
+        }
+
+        /* 地點按鈕 */
+        .location-btn {
+            display: inline-flex;
+            align-items: center;
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            color: #6b7280;
+            font-size: 0.8rem;
+            padding: 5px 10px;
+            border-radius: 8px;
+            text-decoration: none;
+            margin-top: 5px;
+            transition: all 0.2s;
+            font-weight: 500;
+        }
+        .location-btn:active { background: #e5e7eb; }
+        .location-btn svg { width: 14px; height: 14px; margin-right: 4px; color: #9ca3af; }
+
+        /* 備註框 */
+        .note-box {
+            margin-top: 10px;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            line-height: 1.4;
+        }
+
+        /* --- 配色方案 (還原專業感) --- */
+        /* 交通 */
+        .type-交通 .tag { background: #dbeafe; color: #1e40af; }
+        .type-交通 .time-text { color: #1e40af; }
+        
+        /* 住宿 */
+        .type-住宿 .tag { background: #fce7f3; color: #be185d; }
+        .type-住宿 .time-text { color: #be185d; }
+
+        /* 美食 */
+        .type-美食 .tag { background: #fef3c7; color: #b45309; }
+        .type-美食 .time-text { color: #b45309; }
+
+        /* 滑雪 */
+        .type-滑雪 .tag { background: #d1fae5; color: #047857; }
+        .type-滑雪 .time-text { color: #047857; }
+
+        /* 購物 */
+        .type-逛街購物 .tag { background: #ede9fe; color: #6d28d9; }
+        .type-逛街購物 .time-text { color: #6d28d9; }
+
+        /* 放空 */
+        .type-放空亂晃 .tag, .type-景點觀光 .tag { background: #f3f4f6; color: #4b5563; }
+        .type-放空亂晃 .time-text, .type-景點觀光 .time-text { color: #4b5563; }
+
+        /* Note Colors */
+        .note-normal { background: #fffbeb; color: #92400e; border-left: 3px solid #f59e0b; }
+        .note-alert { background: #fef2f2; color: #991b1b; border-left: 3px solid #ef4444; }
+        .note-booked { background: #f0fdf4; color: #166534; border-left: 3px solid #22c55e; }
+
+        /* --- 背景插圖 (保持手繪風但降低透明度，讓它融入背景) --- */
+        .sticker-icon {
+            position: absolute;
+            right: -10px;
+            bottom: -15px;
+            width: 100px;
+            height: 100px;
+            opacity: 0.08; /* 降低不透明度，更低調 */
+            transform: rotate(-10deg);
+            z-index: 1;
+            pointer-events: none;
+            color: #6b7280; /* 統一為灰色調，或者保留特定顏色 */
+        }
+        
+        /* 特殊插圖顏色 (稍微加深一點點以在灰底顯示) */
+        .sticker-tokyo { color: #ef4444; opacity: 0.08; } 
+        .sticker-onsen { color: #3b82f6; opacity: 0.08; } 
+        .sticker-ski { color: #10b981; opacity: 0.1; }   
+
+        .footer { text-align: center; color: #9ca3af; font-size: 0.75rem; padding: 30px; }
+    </style>
+</head>
+<body>
+
+<svg style="display: none;">
+    
+    <symbol id="art-tokyo-tower" viewBox="0 0 100 100">
+        <path fill="currentColor" d="M50,5 L20,95 H80 L50,5 Z M50,15 L70,85 H30 L50,15 Z M35,45 H65 M30,65 H70 M25,85 H75" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        <path d="M48,5 L52,5 L50,2 Z" fill="currentColor"/>
+    </symbol>
+
+    <symbol id="art-onsen" viewBox="0 0 100 100">
+        <path fill="currentColor" d="M10,40 L50,10 L90,40" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        <rect x="20" y="40" width="60" height="50" stroke="currentColor" stroke-width="4" fill="none" rx="5"/>
+        <text x="50" y="75" font-family="sans-serif" font-size="30" text-anchor="middle" fill="currentColor">♨️</text>
+        <path d="M25,40 L25,60 M75,40 L75,60" stroke="currentColor" stroke-width="3"/>
+    </symbol>
+
+    <symbol id="art-ski" viewBox="0 0 100 100">
+        <path fill="currentColor" d="M10,80 L40,30 L70,80 L100,40 L100,90 H10 Z" opacity="0.2"/>
+        <path stroke="currentColor" stroke-width="4" stroke-linecap="round" d="M20,70 C30,60 50,60 60,70 S 90,60 95,70" fill="none"/>
+        <circle cx="50" cy="40" r="5" fill="currentColor"/>
+        <path stroke="currentColor" stroke-width="3" d="M45,45 L40,60 L55,55 L60,70" fill="none"/>
+        <path stroke="currentColor" stroke-width="3" d="M30,75 L70,65" fill="none"/> </symbol>
+
+    <symbol id="art-transport" viewBox="0 0 24 24">
+        <path fill="currentColor" d="M21 16v-2l-8-5V3.5A1.5 1.5 0 0 0 11.5 2 1.5 1.5 0 0 0 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/>
+    </symbol>
+
+    <symbol id="art-shop" viewBox="0 0 24 24">
+        <path fill="currentColor" d="M19,6 L16,6 C16,3.79 14.21,2 12,2 C9.79,2 8,3.79 8,6 L5,6 C3.9,6 3,6.9 3,8 L3,20 C3,21.1 3.9,22 5,22 L19,22 C20.1,22 21,21.1 21,20 L21,8 C21,6.9 20.1,6 19,6 Z M12,4 C13.1,4 14,4.9 14,6 L10,6 C10,4.9 10.9,4 12,4 Z M19,20 L5,20 L5,8 L8,8 L8,10 C8,10.55 8.45,11 9,11 C9.55,11 10,10.55 10,10 L10,8 L14,8 L14,10 C14,10.55 14.45,11 15,11 C15.55,11 16,10.55 16,10 L16,8 L19,8 L19,20 Z"/>
+    </symbol>
+
+    <symbol id="art-food" viewBox="0 0 24 24">
+        <path fill="currentColor" d="M11 9H9V2H7v7H5V2H3v7c0 2.12 1.66 3.84 3.75 3.97V22h2.5v-9.03C11.34 12.84 13 11.12 13 9V2h-2v7zm5-3v8h2.5v8H21V2c-2.76 0-5 2.24-5 4z"/>
+    </symbol>
+
+    <symbol id="art-bed" viewBox="0 0 24 24">
+        <path fill="currentColor" d="M19,7 L11,7 L11,13 L19,13 L19,7 Z M21,3 L3,3 L3,21 L5,21 L5,18 L19,18 L19,21 L21,21 L21,3 Z M17,20 L7,20 L7,16 L17,16 L17,20 Z"/>
+    </symbol>
+    
+    <symbol id="icon-map" viewBox="0 0 24 24">
+        <path fill="currentColor" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/>
+    </symbol>
+</svg>
+
+<div class="app-header">
+    <div class="title-bar">
+        <div>
+            <h1>2026 田澤湖滑雪 🎿</h1>
+            <div class="subtitle">Tokyo & Akita Winter Trip</div>
+        </div>
+    </div>
+    <div class="tabs-wrapper" id="tabs"></div>
+</div>
+
+<div class="container" id="content"></div>
+<div class="footer">Have a nice trip! ✈️</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const rawData = [
+            // 1/15
+            {date: "2026/1/15", time: "12:35", activity: "抵達成田 (16:35到)", location: "成田機場第二航廈", type: "交通", note: ""},
+            {date: "2026/1/15", time: "Check-in", activity: "住宿A (1/15-1/18)", location: "レム六本木", type: "住宿", note: "三晚¥47727 (Agoda)"},
+            {date: "2026/1/15", time: "待取消", activity: "住宿B (記得取消!)", location: "東横INN神田秋葉原", type: "住宿", note: "⚠️ 記得要取消! 三晚¥34865"},
+            {date: "2026/1/15", time: "晚間", activity: "六本木/麻布台/南青山", location: "六本木", type: "放空亂晃", note: ""},
+            
+            // 1/16
+            {date: "2026/1/16", time: "上午", activity: "御茶水/皇居/銀座", location: "", type: "放空亂晃", note: ""},
+            {date: "2026/1/16", time: "下午", activity: "逛雪具", location: "小川町駅", type: "逛街購物", note: ""},
+            {date: "2026/1/16", time: "下午", activity: "戶外用品", location: "ムーンライトギア 東京店", type: "逛街購物", note: ""},
+            {date: "2026/1/16", time: "下午", activity: "Bic Camera", location: "ビックカメラ 有楽町店", type: "逛街購物", note: ""},
+            {date: "2026/1/16", time: "20:00", activity: "和牛燒肉吃到飽", location: "肉屋の台所 Ginza Premium", type: "美食", note: "✅ 已預約"},
+            
+            // 1/17
+            {date: "2026/1/17", time: "上午", activity: "中目黑/代官山/六本木", location: "六本木", type: "放空亂晃", note: ""},
+            {date: "2026/1/17", time: "下午", activity: "LE LABO", location: "LE LABO ルラボ 代官山", type: "逛街購物", note: ""},
+            {date: "2026/1/17", time: "下午", activity: "星巴克臻選烘焙工坊", location: "STARBUCKS RESERVE(R) ROASTERY TOKYO", type: "放空亂晃", note: "人多需抽號碼牌"},
+            
+            // 1/18
+            {date: "2026/1/18", time: "05:15", activity: "退房出發 -> 六本木站", location: "remm roppongi", type: "交通", note: "步行至車站，搭 05:24 大江戶線(往兩國方向)"},
+            {date: "2026/1/18", time: "05:30", activity: "大門站轉乘濱松町", location: "大門駅", type: "交通", note: "大門站B1出口步行至濱松町(有電梯)。搭 05:43 單軌電車。"},
+            {date: "2026/1/18", time: "06:04", activity: "抵達羽田機場T2", location: "羽田空港第2ターミナル", type: "交通", note: "前往2F出發大廳。⚠️滑雪器材需人工託運，請於 06:15 前完成報到。"},
+            {date: "2026/1/18", time: "07:45", activity: "飛秋田 (08:50抵達)", location: "羽田空港 (HND)", type: "交通", note: "ANA401"},
+            {date: "2026/1/18", time: "09:30", activity: "巴士到田澤湖高原", location: "秋田空港 (AXT)", type: "交通", note: "✅ 已預約接駁"},
+            {date: "2026/1/18", time: "11:20", activity: "Check-in 放行李", location: "田沢湖水沢温泉郷 セルリアンリゾートAONI", type: "住宿", note: "四晚一泊二食¥108900"},
+            {date: "2026/1/18", time: "下午", activity: "鶴の湯温泉", location: "乳頭温泉郷 鶴の湯温泉", type: "景點觀光", note: ""},
+            {date: "2026/1/18", time: "下午", activity: "妙乃湯", location: "妙乃湯", type: "景點觀光", note: ""},
+            
+            // 1/19 - 1/21
+            {date: "2026/1/19", time: "全日", activity: "滑雪 (Day 1)", location: "たざわ湖スキー場", type: "滑雪", note: "1/19-1/21 滑三天"},
+            {date: "2026/1/20", time: "全日", activity: "滑雪 (Day 2)", location: "たざわ湖スキー場", type: "滑雪", note: ""},
+            {date: "2026/1/21", time: "全日", activity: "滑雪 (Day 3)", location: "たざわ湖スキー場", type: "滑雪", note: ""},
+            
+            // 1/22
+            {date: "2026/1/22", time: "09:10", activity: "巴士到秋田機場", location: "田沢湖水沢温泉郷", type: "交通", note: "✅ 已預約接駁"},
+            {date: "2026/1/22", time: "14:10", activity: "飛機回台灣 (17:25抵達)", location: "秋田空港 (AXT)", type: "交通", note: ""}
+        ];
+
+        const tabsEl = document.getElementById('tabs');
+        const contentEl = document.getElementById('content');
+        const uniqueDates = [...new Set(rawData.map(d => d.date))];
+        const daysMap = ['週日','週一','週二','週三','週四','週五','週六'];
+
+        // 渲染 Tabs
+        uniqueDates.forEach((date, idx) => {
+            const d = new Date(date);
+            const btn = document.createElement('button');
+            btn.className = `tab-btn ${idx === 0 ? 'active' : ''}`;
+            btn.innerHTML = `<span class="tab-day">${daysMap[d.getDay()]}</span><span class="tab-date">${d.getDate()}</span>`;
+            btn.onclick = () => switchTab(date, btn);
+            tabsEl.appendChild(btn);
+        });
+
+        renderList(uniqueDates[0]);
+
+        function switchTab(date, btn) {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            btn.scrollIntoView({behavior: 'smooth', inline: 'center'});
+            renderList(date);
+        }
+
+        function renderList(date) {
+            contentEl.innerHTML = '';
+            const items = rawData.filter(d => d.date === date);
+
+            if(items.length === 0) {
+                contentEl.innerHTML = '<div style="text-align:center;color:#94a3b8;margin-top:40px;">本日無行程</div>';
+                return;
+            }
+
+            items.forEach((item, idx) => {
+                let icon = '#art-transport'; 
+                let stickerClass = '';
+
+                // 預設分類圖標
+                if(item.type === '住宿') icon = '#art-bed';
+                if(item.type === '美食') icon = '#art-food';
+                if(item.type === '滑雪') icon = '#art-ski';
+                if(item.type === '逛街購物') icon = '#art-shop';
+
+                // 特殊情境判斷
+                if(item.location && (item.location.includes('六本木') || item.activity.includes('六本木') || item.location.includes('東京'))) {
+                    icon = '#art-tokyo-tower';
+                    stickerClass = 'sticker-tokyo';
+                }
+                if(item.activity.includes('溫泉') || item.location.includes('温泉')) {
+                    icon = '#art-onsen';
+                    stickerClass = 'sticker-onsen';
+                }
+                if(item.type === '滑雪') {
+                    icon = '#art-ski';
+                    stickerClass = 'sticker-ski';
+                }
+
+                // 時間處理
+                let timeStr = item.time;
+                let ampm = '';
+                if(timeStr.includes(':')) {
+                    const h = parseInt(timeStr.split(':')[0]);
+                    ampm = h >= 12 ? 'PM' : 'AM';
+                }
+
+                // 備註處理
+                let noteHtml = '';
+                if(item.note) {
+                    let nClass = 'note-normal';
+                    if(item.note.includes('取消') || item.note.includes('⚠️')) nClass = 'note-alert';
+                    if(item.note.includes('預約') || item.note.includes('✅')) nClass = 'note-booked';
+                    noteHtml = `<div class="note-box ${nClass}">${item.note}</div>`;
+                }
+
+                // 地圖按鈕
+                let mapHtml = '';
+                if(item.location) {
+                    const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.location)}`;
+                    mapHtml = `<a href="${mapUrl}" target="_blank" class="location-btn">
+                        <svg viewBox="0 0 24 24"><use href="#icon-map"></use></svg>${item.location}
+                    </a>`;
+                }
+
+                const card = document.createElement('div');
+                card.className = `card type-${item.type}`;
+                card.style.animationDelay = `${idx * 0.05}s`;
+                
+                card.innerHTML = `
+                    <div class="time-col">
+                        <div class="time-text">${timeStr}</div>
+                        <div class="time-ampm">${ampm}</div>
+                    </div>
+                    <div class="info-col">
+                        <div class="tag">${item.type}</div>
+                        <div class="activity-title">${item.activity}</div>
+                        ${mapHtml}
+                        ${noteHtml}
+                    </div>
+                    <svg class="sticker-icon ${stickerClass}"><use href="${icon}"></use></svg>
+                `;
+                contentEl.appendChild(card);
+            });
+        }
+    });
+</script>
+</body>
+</html>
