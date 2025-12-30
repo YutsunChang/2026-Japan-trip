@@ -5,18 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>2026 田澤湖滑雪之旅</title>
     
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2271/2271068.png"> 
+    <meta name="apple-mobile-web-app-title" content="2026滑雪">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    
     <style>
         :root {
-            /* 還原回原本的質感配色 */
-            --primary: #6366f1; /* 原本的質感靛藍色 */
-            --bg-gradient: linear-gradient(135deg, #f9fafb 0%, #e5e7eb 100%); /* 還原灰白漸層背景 */
+            --primary: #6366f1;
+            --bg-gradient: linear-gradient(135deg, #f9fafb 0%, #e5e7eb 100%);
             --card-bg: #ffffff;
             --text-main: #1f2937;
             --radius: 16px;
         }
 
         body {
-            /* 還原回系統預設字體，閱讀性最佳 */
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
             background: var(--bg-gradient);
             color: var(--text-main);
@@ -87,7 +90,6 @@
         /* --- Content --- */
         .container {
             padding: 20px;
-            /* 響應式設計關鍵：限制最大寬度並置中 */
             max-width: 600px; 
             margin: 0 auto;
         }
@@ -112,7 +114,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* 左側時間軸 */
         .time-col {
             display: flex;
             flex-direction: column;
@@ -129,7 +130,6 @@
 
         .info-col { flex: 1; position: relative; z-index: 2; }
 
-        /* 標籤 */
         .tag {
             display: inline-block;
             font-size: 0.75rem;
@@ -148,7 +148,6 @@
             line-height: 1.4;
         }
 
-        /* 地點按鈕 */
         .location-btn {
             display: inline-flex;
             align-items: center;
@@ -166,7 +165,6 @@
         .location-btn:active { background: #e5e7eb; }
         .location-btn svg { width: 14px; height: 14px; margin-right: 4px; color: #9ca3af; }
 
-        /* 備註框 */
         .note-box {
             margin-top: 10px;
             padding: 8px 12px;
@@ -175,51 +173,37 @@
             line-height: 1.4;
         }
 
-        /* --- 配色方案 (還原專業感) --- */
-        /* 交通 */
+        /* 配色 */
         .type-交通 .tag { background: #dbeafe; color: #1e40af; }
         .type-交通 .time-text { color: #1e40af; }
-        
-        /* 住宿 */
         .type-住宿 .tag { background: #fce7f3; color: #be185d; }
         .type-住宿 .time-text { color: #be185d; }
-
-        /* 美食 */
         .type-美食 .tag { background: #fef3c7; color: #b45309; }
         .type-美食 .time-text { color: #b45309; }
-
-        /* 滑雪 */
         .type-滑雪 .tag { background: #d1fae5; color: #047857; }
         .type-滑雪 .time-text { color: #047857; }
-
-        /* 購物 */
         .type-逛街購物 .tag { background: #ede9fe; color: #6d28d9; }
         .type-逛街購物 .time-text { color: #6d28d9; }
-
-        /* 放空 */
         .type-放空亂晃 .tag, .type-景點觀光 .tag { background: #f3f4f6; color: #4b5563; }
         .type-放空亂晃 .time-text, .type-景點觀光 .time-text { color: #4b5563; }
 
-        /* Note Colors */
         .note-normal { background: #fffbeb; color: #92400e; border-left: 3px solid #f59e0b; }
         .note-alert { background: #fef2f2; color: #991b1b; border-left: 3px solid #ef4444; }
         .note-booked { background: #f0fdf4; color: #166534; border-left: 3px solid #22c55e; }
 
-        /* --- 背景插圖 (保持手繪風但降低透明度，讓它融入背景) --- */
+        /* 背景插圖 (淡化) */
         .sticker-icon {
             position: absolute;
             right: -10px;
             bottom: -15px;
             width: 100px;
             height: 100px;
-            opacity: 0.08; /* 降低不透明度，更低調 */
+            opacity: 0.08;
             transform: rotate(-10deg);
             z-index: 1;
             pointer-events: none;
-            color: #6b7280; /* 統一為灰色調，或者保留特定顏色 */
+            color: #6b7280; 
         }
-        
-        /* 特殊插圖顏色 (稍微加深一點點以在灰底顯示) */
         .sticker-tokyo { color: #ef4444; opacity: 0.08; } 
         .sticker-onsen { color: #3b82f6; opacity: 0.08; } 
         .sticker-ski { color: #10b981; opacity: 0.1; }   
@@ -230,45 +214,28 @@
 <body>
 
 <svg style="display: none;">
-    
     <symbol id="art-tokyo-tower" viewBox="0 0 100 100">
         <path fill="currentColor" d="M50,5 L20,95 H80 L50,5 Z M50,15 L70,85 H30 L50,15 Z M35,45 H65 M30,65 H70 M25,85 H75" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
         <path d="M48,5 L52,5 L50,2 Z" fill="currentColor"/>
     </symbol>
-
     <symbol id="art-onsen" viewBox="0 0 100 100">
         <path fill="currentColor" d="M10,40 L50,10 L90,40" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
         <rect x="20" y="40" width="60" height="50" stroke="currentColor" stroke-width="4" fill="none" rx="5"/>
         <text x="50" y="75" font-family="sans-serif" font-size="30" text-anchor="middle" fill="currentColor">♨️</text>
         <path d="M25,40 L25,60 M75,40 L75,60" stroke="currentColor" stroke-width="3"/>
     </symbol>
-
     <symbol id="art-ski" viewBox="0 0 100 100">
         <path fill="currentColor" d="M10,80 L40,30 L70,80 L100,40 L100,90 H10 Z" opacity="0.2"/>
         <path stroke="currentColor" stroke-width="4" stroke-linecap="round" d="M20,70 C30,60 50,60 60,70 S 90,60 95,70" fill="none"/>
         <circle cx="50" cy="40" r="5" fill="currentColor"/>
         <path stroke="currentColor" stroke-width="3" d="M45,45 L40,60 L55,55 L60,70" fill="none"/>
-        <path stroke="currentColor" stroke-width="3" d="M30,75 L70,65" fill="none"/> </symbol>
-
-    <symbol id="art-transport" viewBox="0 0 24 24">
-        <path fill="currentColor" d="M21 16v-2l-8-5V3.5A1.5 1.5 0 0 0 11.5 2 1.5 1.5 0 0 0 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/>
+        <path stroke="currentColor" stroke-width="3" d="M30,75 L70,65" fill="none"/>
     </symbol>
-
-    <symbol id="art-shop" viewBox="0 0 24 24">
-        <path fill="currentColor" d="M19,6 L16,6 C16,3.79 14.21,2 12,2 C9.79,2 8,3.79 8,6 L5,6 C3.9,6 3,6.9 3,8 L3,20 C3,21.1 3.9,22 5,22 L19,22 C20.1,22 21,21.1 21,20 L21,8 C21,6.9 20.1,6 19,6 Z M12,4 C13.1,4 14,4.9 14,6 L10,6 C10,4.9 10.9,4 12,4 Z M19,20 L5,20 L5,8 L8,8 L8,10 C8,10.55 8.45,11 9,11 C9.55,11 10,10.55 10,10 L10,8 L14,8 L14,10 C14,10.55 14.45,11 15,11 C15.55,11 16,10.55 16,10 L16,8 L19,8 L19,20 Z"/>
-    </symbol>
-
-    <symbol id="art-food" viewBox="0 0 24 24">
-        <path fill="currentColor" d="M11 9H9V2H7v7H5V2H3v7c0 2.12 1.66 3.84 3.75 3.97V22h2.5v-9.03C11.34 12.84 13 11.12 13 9V2h-2v7zm5-3v8h2.5v8H21V2c-2.76 0-5 2.24-5 4z"/>
-    </symbol>
-
-    <symbol id="art-bed" viewBox="0 0 24 24">
-        <path fill="currentColor" d="M19,7 L11,7 L11,13 L19,13 L19,7 Z M21,3 L3,3 L3,21 L5,21 L5,18 L19,18 L19,21 L21,21 L21,3 Z M17,20 L7,20 L7,16 L17,16 L17,20 Z"/>
-    </symbol>
-    
-    <symbol id="icon-map" viewBox="0 0 24 24">
-        <path fill="currentColor" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/>
-    </symbol>
+    <symbol id="art-transport" viewBox="0 0 24 24"><path fill="currentColor" d="M21 16v-2l-8-5V3.5A1.5 1.5 0 0 0 11.5 2 1.5 1.5 0 0 0 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/></symbol>
+    <symbol id="art-shop" viewBox="0 0 24 24"><path fill="currentColor" d="M19,6 L16,6 C16,3.79 14.21,2 12,2 C9.79,2 8,3.79 8,6 L5,6 C3.9,6 3,6.9 3,8 L3,20 C3,21.1 3.9,22 5,22 L19,22 C20.1,22 21,21.1 21,20 L21,8 C21,6.9 20.1,6 19,6 Z M12,4 C13.1,4 14,4.9 14,6 L10,6 C10,4.9 10.9,4 12,4 Z M19,20 L5,20 L5,8 L8,8 L8,10 C8,10.55 8.45,11 9,11 C9.55,11 10,10.55 10,10 L10,8 L14,8 L14,10 C14,10.55 14.45,11 15,11 C15.55,11 16,10.55 16,10 L16,8 L19,8 L19,20 Z"/></symbol>
+    <symbol id="art-food" viewBox="0 0 24 24"><path fill="currentColor" d="M11 9H9V2H7v7H5V2H3v7c0 2.12 1.66 3.84 3.75 3.97V22h2.5v-9.03C11.34 12.84 13 11.12 13 9V2h-2v7zm5-3v8h2.5v8H21V2c-2.76 0-5 2.24-5 4z"/></symbol>
+    <symbol id="art-bed" viewBox="0 0 24 24"><path fill="currentColor" d="M19,7 L11,7 L11,13 L19,13 L19,7 Z M21,3 L3,3 L3,21 L5,21 L5,18 L19,18 L19,21 L21,21 L21,3 Z M17,20 L7,20 L7,16 L17,16 L17,20 Z"/></symbol>
+    <symbol id="icon-map" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></symbol>
 </svg>
 
 <div class="app-header">
@@ -288,7 +255,7 @@
     document.addEventListener('DOMContentLoaded', () => {
         const rawData = [
             // 1/15
-            {date: "2026/1/15", time: "12:35", activity: "抵達成田 (16:35到)", location: "成田機場第二航廈", type: "交通", note: ""},
+            {date: "2026/1/15", time: "12:35", activity: "抵達成田 (16:35到)", location: "桃園國際機場第二航廈", type: "交通", note: ""},
             {date: "2026/1/15", time: "Check-in", activity: "住宿A (1/15-1/18)", location: "レム六本木", type: "住宿", note: "三晚¥47727 (Agoda)"},
             {date: "2026/1/15", time: "待取消", activity: "住宿B (記得取消!)", location: "東横INN神田秋葉原", type: "住宿", note: "⚠️ 記得要取消! 三晚¥34865"},
             {date: "2026/1/15", time: "晚間", activity: "六本木/麻布台/南青山", location: "六本木", type: "放空亂晃", note: ""},
@@ -321,7 +288,7 @@
             {date: "2026/1/21", time: "全日", activity: "滑雪 (Day 3)", location: "たざわ湖スキー場", type: "滑雪", note: ""},
             
             // 1/22
-            {date: "2026/1/22", time: "09:10", activity: "巴士到秋田機場", location: "田沢湖水沢温泉郷", type: "交通", note: "✅ 已預約接駁"},
+            {date: "2026/1/22", time: "09:10", activity: "巴士到秋田機場", location: "田沢湖水沢温泉郷 セルリアンリゾートAONI", type: "交通", note: "✅ 已預約接駁"},
             {date: "2026/1/22", time: "14:10", activity: "飛機回台灣 (17:25抵達)", location: "秋田空港 (AXT)", type: "交通", note: ""}
         ];
 
@@ -399,10 +366,16 @@
                     noteHtml = `<div class="note-box ${nClass}">${item.note}</div>`;
                 }
 
-                // 地圖按鈕
+                // 地圖按鈕 (優先使用 customUrl)
                 let mapHtml = '';
                 if(item.location) {
-                    const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.location)}`;
+                    let mapUrl = '';
+                    if (item.customUrl) {
+                        mapUrl = item.customUrl;
+                    } else {
+                        mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.location)}`;
+                    }
+                    
                     mapHtml = `<a href="${mapUrl}" target="_blank" class="location-btn">
                         <svg viewBox="0 0 24 24"><use href="#icon-map"></use></svg>${item.location}
                     </a>`;
